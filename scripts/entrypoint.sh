@@ -49,7 +49,7 @@ MAX_TURNS="${MAX_TURNS:-}"
 ALLOWEDTOOLS="${ALLOWEDTOOLS:-}"
 DISALLOWEDTOOLS="${DISALLOWEDTOOLS:-}"
 SUB_PATH="${SUB_PATH:-}"
-SANDBOX="${SANDBOX:-danger-full-access}"
+SANDBOX="${SANDBOX:-}"
 
 echo "Source:      ${SOURCE_URL}"
 echo "Model:       ${MODEL:-<default>}"
@@ -205,15 +205,19 @@ fi
 
 CODEX_ARGS=("exec")
 
-# Full-auto mode for headless operation (no approval prompts)
-CODEX_ARGS+=("--full-auto")
-
 if [ -n "${MODEL}" ]; then
   CODEX_ARGS+=("--model" "${MODEL}")
 fi
 
+# In a container environment (K8s pod), bwrap sandboxing fails because
+# unprivileged user namespaces are not available. Use the bypass flag
+# which disables bwrap entirely — the container itself provides isolation.
+# If SANDBOX is explicitly set, use --full-auto + --sandbox instead (for local dev).
 if [ -n "${SANDBOX}" ]; then
+  CODEX_ARGS+=("--full-auto")
   CODEX_ARGS+=("--sandbox" "${SANDBOX}")
+else
+  CODEX_ARGS+=("--dangerously-bypass-approvals-and-sandbox")
 fi
 
 # ------------------------------------------------------------------
