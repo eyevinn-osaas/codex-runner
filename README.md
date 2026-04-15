@@ -26,7 +26,7 @@ Built for [Eyevinn Open Source Cloud](https://www.osaas.io).
 | --- | --- |
 | `GIT_TOKEN` | Token for cloning private repositories. Alias: `GITHUB_TOKEN`. Works with GitHub PATs and Gitea-style tokens |
 | `MODEL` | Model to use (e.g. `o3-mini`, `gpt-4.1`) |
-| `SANDBOX` | Sandbox mode (default: `none`). Bubblewrap sandboxing requires `SYS_ADMIN` capability which most containers lack, so the default is `none`. Set to `workspace-write` or `danger-full-access` if your container has the required capabilities |
+| `SANDBOX` | Sandbox mode: `read-only`, `workspace-write`, or `danger-full-access` (default: `workspace-write`). The default `read-only` sandbox uses bubblewrap which requires `SYS_ADMIN` capability that most containers lack |
 | `SUB_PATH` | Subdirectory within the repo to use as working directory |
 | `CONFIG_SVC` | Name of an OSC Application Config Service instance. When set together with `OSC_ACCESS_TOKEN`, environment variables are loaded from the config service before the Codex session starts |
 | `OSC_ACCESS_TOKEN` | Open Source Cloud access token. Enables the OSC MCP server and config service integration |
