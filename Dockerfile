@@ -9,6 +9,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     python3-pip \
     python3-venv \
+    make \
+    g++ \
     && ln -sf /usr/bin/python3 /usr/local/bin/python \
     && rm -rf /var/lib/apt/lists/*
 
@@ -50,7 +52,7 @@ RUN mkdir -p "$NVM_DIR" \
 # Security scanner tools for SDLC security audit (osaas-deploy-manager#505)
 # Versions pinned 2026-04-24 — bump in a dedicated version PR per ADR-0025
 # pip-audit:     2.7.3
-# govulncheck:   v1.1.3
+# govulncheck:   v1.3.0
 # cargo-audit:   0.20.0
 # trufflehog:    v3.88.4
 # hadolint:      v2.12.0
@@ -78,7 +80,7 @@ RUN set -eux; \
     echo "${GOSHA}  /tmp/go.tar.gz" | sha256sum -c -; \
     tar -C /usr/local -xzf /tmp/go.tar.gz; \
     rm /tmp/go.tar.gz; \
-    /usr/local/go/bin/go install golang.org/x/vuln/cmd/govulncheck@v1.1.3; \
+    /usr/local/go/bin/go install golang.org/x/vuln/cmd/govulncheck@v1.3.0; \
     cp /root/go/bin/govulncheck /usr/local/bin/govulncheck; \
     rm -rf /usr/local/go /root/go /root/.cache/go-build
 
