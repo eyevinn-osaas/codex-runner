@@ -188,7 +188,7 @@ if [ -n "${OSC_ACCESS_TOKEN:-}" ]; then
   "mcpServers": {
     "OSC": {
       "type": "http",
-      "url": "https://mcp.osaas.io/mcp",
+      "url": "${OSC_MCP_URL:-https://mcp.osaas.io/mcp}",
       "headers": {
         "Authorization": "Bearer ${OSC_ACCESS_TOKEN}"
       }
@@ -196,7 +196,7 @@ if [ -n "${OSC_ACCESS_TOKEN:-}" ]; then
   }
 }
 MCPEOF
-  echo "OSC MCP server configured (https://mcp.osaas.io/mcp)"
+  echo "OSC MCP server configured (${OSC_MCP_URL:-https://mcp.osaas.io/mcp})"
 fi
 
 # ------------------------------------------------------------------
