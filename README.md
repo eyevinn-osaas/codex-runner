@@ -30,6 +30,7 @@ Built for [Eyevinn Open Source Cloud](https://www.osaas.io).
 | `SUB_PATH` | Subdirectory within the repo to use as working directory |
 | `CONFIG_SVC` | Name of an OSC Application Config Service instance. When set together with `OSC_ACCESS_TOKEN`, environment variables are loaded from the config service before the Codex session starts |
 | `OSC_ACCESS_TOKEN` | Open Source Cloud access token. Enables the OSC MCP server and config service integration |
+| `CONFIG_API_KEY` | API key for encrypted parameter store. When set alongside `OSC_ACCESS_TOKEN` and `CONFIG_SVC`, secret parameters are decrypted before being injected as environment variables. |
 
 ## Usage
 
