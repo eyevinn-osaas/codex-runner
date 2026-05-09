@@ -125,6 +125,16 @@ fi
 # ------------------------------------------------------------------
 
 if [ -n "${OSC_ACCESS_TOKEN:-}" ] && [ -n "${CONFIG_SVC:-}" ]; then
+  # Derive OSC environment from OSC_MCP_URL if OSC_ENV is not set explicitly
+  if [ -z "${OSC_ENV:-}" ] && [ -n "${OSC_MCP_URL:-}" ]; then
+    _extracted=$(echo "${OSC_MCP_URL}" | sed -n 's|.*\.svc\.\([a-z]*\)\.osaas\.io.*|\1|p')
+    if [ -n "${_extracted}" ]; then
+      OSC_ENV="${_extracted}"
+    else
+      OSC_ENV="prod"
+    fi
+  fi
+
   # Refresh the access token via the runner token service
   REFRESH_RESULT=$(curl -sf -X POST \
     "https://token.svc.${OSC_ENV:-prod}.osaas.io/runner-token/refresh" \
@@ -139,7 +149,7 @@ if [ -n "${OSC_ACCESS_TOKEN:-}" ] && [ -n "${CONFIG_SVC:-}" ]; then
   fi
 
   echo "[CONFIG] Loading environment variables from config service '${CONFIG_SVC}'"
-  config_env_output=$(npx -y @osaas/cli@latest web config-to-env "${CONFIG_SVC}" 2>&1) || true
+  config_env_output=$(npx -y @osaas/cli@latest web config-to-env --env "${OSC_ENV:-prod}" "${CONFIG_SVC}" 2>&1) || true
   config_exit=$?
   if [ ${config_exit} -eq 0 ]; then
     # Only eval lines that are valid shell export statements
