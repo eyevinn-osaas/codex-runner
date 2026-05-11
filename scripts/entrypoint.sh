@@ -192,20 +192,9 @@ fi
 
 if [ -n "${OSC_ACCESS_TOKEN:-}" ]; then
   echo "Configuring OSC MCP server for Codex..."
-  mkdir -p "${HOME}/.codex"
-  cat > "${HOME}/.codex/config.json" <<MCPEOF
-{
-  "mcpServers": {
-    "OSC": {
-      "type": "http",
-      "url": "${OSC_MCP_URL:-https://mcp.osaas.io/mcp}",
-      "headers": {
-        "Authorization": "Bearer ${OSC_ACCESS_TOKEN}"
-      }
-    }
-  }
-}
-MCPEOF
+  codex mcp add OSC \
+    --url "${OSC_MCP_URL:-https://mcp.osaas.io/mcp}" \
+    --bearer-token-env-var OSC_ACCESS_TOKEN
   echo "OSC MCP server configured (${OSC_MCP_URL:-https://mcp.osaas.io/mcp})"
 fi
 
